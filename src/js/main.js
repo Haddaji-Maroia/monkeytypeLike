@@ -1,5 +1,6 @@
 import { getRandomParagraph } from "./helpers.js";
 import { settings } from "./settings.js";
+import { GameState } from "./GameState.js";
 
 const pElement = document.querySelector('.monkey-paragraph');
 const paragraphData = getRandomParagraph();
@@ -10,11 +11,6 @@ let currentWord = 0;
 let currentLetter = 0;
 let correctLetters = 0;
 let errorLetters = 0;
-
-// (facoltativo, per il timer)
-let startTime = null;
-let elapsedTime = 0;
-let intervalId = null;
 
 
 if (pElement && paragraphData) {
@@ -66,13 +62,19 @@ function updateCursor() {
 }
 updateCursor();
 
-
-document.addEventListener("keydown", (e)=>{
+//event keyboard
+document.addEventListener("keydown", (event)=>{
     //filtra i tasti ignorati
-    if (settings.isIgnorableKey(e.key)) {
-        console.log("Ignoro:", e.key);
+    if (settings.isIgnorableKey(event)) {
+        console.log("Ignoro:", event.key);
+        return; // Non faccio nulla se è un tasto ignorabile
     }
 
-    //check if
+    console.log("Hai premuto:", event.key);
+
+    // Avvia il timer solo una volta
+    if (!GameState.isStarted()) {
+        GameState.startTimer();
+    }
 
 });
