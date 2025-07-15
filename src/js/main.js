@@ -1,4 +1,5 @@
 import { getRandomParagraph } from "./helpers.js";
+import { settings } from "./settings.js";
 
 const pElement = document.querySelector('.monkey-paragraph');
 const paragraphData = getRandomParagraph();
@@ -63,6 +64,15 @@ function updateCursor() {
     wordObj.spanWordElement.classList.add("active");
     
 }
-
-
 updateCursor();
+
+
+document.addEventListener("keydown", (e)=>{
+    //filtra i tasti ignorati
+    if (settings.isIgnorableKey(e.key)) {
+        console.log("Ignoro:", e.key);
+    }
+
+    //check if
+
+});
