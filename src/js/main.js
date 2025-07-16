@@ -77,4 +77,27 @@ document.addEventListener("keydown", (event)=>{
         GameState.startTimer();
     }
 
+    //gestione tasti
+    const currentWordElement = document.querySelectorAll(".word")[currentWord];
+    const currentLetterElement = currentWordElement.querySelectorAll("span")[currentLetter];
+    const expectedLetter = paragraphData[currentWord].letters[currentLetter].letter;
+
+    if (event.key === expectedLetter) {
+        currentLetterElement.classList.add(settings.correctClass);
+        correctLetters++;
+    } else {
+        currentLetterElement.classList.add(settings.errorClass);
+        errorLetters++;
+    }
+
+    currentLetterElement.classList.remove(settings.currentClass);
+    currentLetter++;
+
+    const nextLetterElement = currentWordElement.querySelectorAll("span")[currentLetter];
+    if (nextLetterElement) {
+        nextLetterElement.classList.add(settings.currentClass);
+    }
+
 });
+
+
