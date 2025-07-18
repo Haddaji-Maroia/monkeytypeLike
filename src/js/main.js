@@ -70,12 +70,32 @@ document.addEventListener("keydown", (event)=>{
         return; // Non faccio nulla se è un tasto ignorabile
     }
 
-    console.log("Hai premuto:", event.key);
-
     // Avvia il timer solo una volta
     if (!GameState.isStarted()) {
         GameState.startTimer();
     }
+
+
+    //gestione space bar
+    if (event.key === " ") {
+        event.preventDefault(); // 👈 Impedisce lo scroll della pagina
+
+        // 1. Aggiungi la classe "typed" alla parola attuale
+        const currentWordObj = paragraphData[currentWord];
+        currentWordObj.spanWordElement.classList.add(settings.typedClass);
+
+        // 2. Vai alla parola successiva
+        currentWord++;
+        currentLetter = 0;
+
+        // 3. Se c'è un'altra parola, aggiorna il cursore
+        if (currentWord < paragraphData.length) {
+            updateCursor();
+        }
+
+        return; // Esci: lo spazio ha già fatto il suo lavoro
+    }
+
 
     //gestione tasti
     const currentWordElement = document.querySelectorAll(".word")[currentWord];
@@ -99,5 +119,8 @@ document.addEventListener("keydown", (event)=>{
     }
 
 });
+
+
+
 
 
