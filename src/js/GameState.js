@@ -21,6 +21,12 @@ function startTimer() {
         if (remainingTime <= 0) {
             clearInterval(timerInterval);
             // Qui puoi aggiungere logica per "fine gioco"
+            // ✅ Usa le variabili globali
+            showEndScreen(
+                window.correctLetters,
+                window.errorLetters,
+                window.paragraphData.length
+            );
         }
     }, 1000);
 
@@ -50,5 +56,37 @@ export const GameState = {
     isStarted,
     getElapsedTime: () => remainingTime,
 };
+
+
+function showEndScreen(correctLetters, errorLetters, totalWords) {
+    const template = document.getElementById(settings.typeFormTemplateId);
+    const clone = template.content.cloneNode(true);
+    const main = document.getElementById(settings.mainElementId);
+
+    // ✅ Aggiungilo nel DOM
+    main.innerHTML = ""; // pulisci prima!
+    main.appendChild(clone);
+
+    // ✅ Ora prendi il form (dopo che è stato aggiunto al DOM)
+    const form = document.getElementById(settings.typedFormElementId);
+
+    if (form) {
+        form.addEventListener("submit", (e) => {
+            e.preventDefault(); // ❌ Impedisce il ricaricamento della pagina
+            location.reload();  // 🔁 Ricarica la pagina per ricominciare
+        });
+    }
+
+    const feedback = document.getElementById(settings.feedbackElementId);
+    const timeUsed = settings.maxTime - GameState.getElapsedTime();
+
+    feedback.textContent = settings.getFeedback(
+        correctLetters,
+        errorLetters,
+        totalWords,
+        timeUsed
+    );
+}
+
 
 

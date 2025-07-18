@@ -12,6 +12,11 @@ let currentLetter = 0;
 let correctLetters = 0;
 let errorLetters = 0;
 
+// 👇 Rendo queste variabili visibili globalmente
+window.correctLetters = correctLetters;
+window.errorLetters = errorLetters;
+window.paragraphData = paragraphData;
+
 
 if (pElement && paragraphData) {
     // Svuota il container prima di renderizzare
@@ -113,20 +118,27 @@ document.addEventListener("keydown", (event)=>{
     if (event.key === " ") {
         event.preventDefault(); // 👈 Impedisce lo scroll della pagina
 
-        // 1. Aggiungi la classe "typed" alla parola attuale
         const currentWordObj = paragraphData[currentWord];
+
+        // 🔴 1. Conta come errore ogni lettera che non è ancora stata toccata
+        for (let i = currentLetter; i < currentWordObj.letters.length; i++) {
+            const letterEl = currentWordObj.letters[i].spanLetterElement;
+            letterEl.classList.add(settings.errorClass);
+            errorLetters++;
+        }
+
+        // 🟢 2. Aggiungi la classe "typed"
         currentWordObj.spanWordElement.classList.add(settings.typedClass);
 
-        // 2. Vai alla parola successiva
+        // 🔁 3. Passa alla parola successiva
         currentWord++;
         currentLetter = 0;
 
-        // 3. Se c'è un'altra parola, aggiorna il cursore
         if (currentWord < paragraphData.length) {
             updateCursor();
         }
 
-        return; // Esci: lo spazio ha già fatto il suo lavoro
+        return;
     }
 
 
@@ -152,6 +164,7 @@ document.addEventListener("keydown", (event)=>{
     }
 
 });
+
 
 
 
