@@ -76,6 +76,39 @@ document.addEventListener("keydown", (event)=>{
     }
 
 
+    // backspace gestione
+    if (event.key === "Backspace") {
+        // Se siamo all'inizio del primo word, non fare nulla
+        if (currentWord === 0 && currentLetter === 0) return;
+
+        // Se siamo all'inizio di una parola (non la prima), torna alla fine della parola precedente
+        if (currentLetter === 0) {
+            currentWord--;
+            currentLetter = paragraphData[currentWord].letters.length;
+        }
+
+        // Altrimenti, semplicemente torna indietro di una lettera
+        else {
+            currentLetter--;
+        }
+
+        // Prendi l'elemento della lettera da cui stai tornando
+        const letterToClear = paragraphData[currentWord].letters[currentLetter].spanLetterElement;
+
+        // Rimuovi tutte le classi di stato
+        letterToClear.classList.remove(
+            settings.correctClass,
+            settings.errorClass,
+            settings.currentClass
+        );
+
+        // Aggiorna il cursore
+        updateCursor();
+
+        return; // Fermati qui, non processare altri tasti
+    }
+
+
     //gestione space bar
     if (event.key === " ") {
         event.preventDefault(); // 👈 Impedisce lo scroll della pagina
